@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "327435466480",
+    "firebase_url": "https://bookstoreoline-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "bookstoreoline",
+    "storage_bucket": "bookstoreoline.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327435466480:android:4c673ab24eb60b2bf13435",
+        "android_client_info": {
+          "package_name": "com.example.shoppingonline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX-WAtAp6ZE19ILxe22Phty7b55FUxteA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
