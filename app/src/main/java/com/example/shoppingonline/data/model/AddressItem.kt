@@ -11,5 +11,4 @@ data class AddressItem(
     val note: String = "",
     val latitude: Double = 0.0,
     val longitude: Double = 0.0,
-    val isDefault: Boolean = false
 )

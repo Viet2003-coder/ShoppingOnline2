@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- Internet để load map -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Truy cập trạng thái mạng -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Internet để load map -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Truy cập trạng thái mạng -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,9 +16,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BookStoreOnline">
+        <activity
+            android:name=".ui.product.oder.OderDetail"
+            android:exported="false" />
+        <activity
+            android:name=".ui.product.Auth.Login"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".ui.product.adress.AddAddress"
             android:exported="false" />
@@ -30,7 +37,7 @@
             android:name=".ui.product.oder.BuyActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.product.cart.Productdetail"
+            android:name=".ui.product.Productdetail"
             android:exported="false" />
         <activity
             android:name=".ui.product.adress.PickMapLocation"
@@ -40,7 +47,7 @@
             android:exported="false" />
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".ui.product.Auth.Login"
+            android:name=".Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

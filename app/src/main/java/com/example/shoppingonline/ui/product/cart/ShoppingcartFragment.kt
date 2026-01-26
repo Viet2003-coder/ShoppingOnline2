@@ -15,9 +15,13 @@ import com.example.shoppingonline.ui.product.oder.BuyActivity
 import com.example.shoppingonline.R
 import com.example.shoppingonline.UserSession
 import androidx.fragment.app.activityViewModels
+import com.example.shoppingonline.Model.User
+import com.example.shoppingonline.ui.product.Auth.AuthViewModel
+import com.example.shoppingonline.ui.product.Auth.Login
 
 class ShoppingcartFragment : Fragment() {
     private val cartModel : CartModel by activityViewModels()
+    private val authViewModel : AuthViewModel by activityViewModels()
     private lateinit var  adapter : CartAdapter
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -29,34 +33,47 @@ class ShoppingcartFragment : Fragment() {
         val toolbar=view.findViewById<Toolbar>(R.id.toolbarCart)
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            title = "Giỏ hàng"
+            setDisplayShowTitleEnabled(false)
         }
-        val userId= UserSession.currentUser?.uid.toString()
-        adapter= CartAdapter { cartItem ->
-            val intent = Intent(requireContext(), BuyActivity::class.java)
-            intent.putExtra("product_id", cartItem.productId)
-            intent.putExtra("product_title", cartItem.title)
-            intent.putExtra("product_image", cartItem.thumbnail)
-            intent.putExtra("product_des", cartItem.description)
-            intent.putExtra("product_price", cartItem.price.toString())
-            startActivity(intent)
+        authViewModel.loadUser()
+        authViewModel.user.observe(viewLifecycleOwner) { user ->
+            if (user == null) {
+                startActivity(Intent(requireContext(), Login::class.java))
+                requireActivity().finish()
+                return@observe
+            }
+
+            val userId = user.uid
+
+            adapter = CartAdapter { cartItem ->
+                val intent = Intent(requireContext(), BuyActivity::class.java)
+                intent.putExtra("product_id", cartItem.productId)
+                startActivity(intent)
+            }
+
+            rcv.layoutManager = GridLayoutManager(requireContext(), 1)
+            rcv.adapter = adapter
+
+            cartModel.carts.observe(viewLifecycleOwner) {
+                adapter.submitData(it)
+            }
+
+            cartModel.loadCart(userId)
         }
-        rcv.layoutManager= GridLayoutManager(requireContext(), 1)
-        rcv.adapter=adapter
-        cartModel.carts.observe(viewLifecycleOwner){
-            adapter.submitData(it)
-        }
-        cartModel.loadCart(userId)
         return view
     }
 
     override fun onResume() {
         super.onResume()
-        val userId= UserSession.currentUser?.uid.toString()
-        cartModel.carts.observe(viewLifecycleOwner){
-            adapter.submitData(it)
+        authViewModel.user.observe(viewLifecycleOwner){user ->
+            if (user==null){
+                startActivity(Intent(requireContext(), Login::class.java))
+                return@observe
+            }
+            cartModel.carts.observe(viewLifecycleOwner){
+                adapter.submitData(it)
+            }
+            cartModel.loadCart(user.uid)
         }
-        cartModel.loadCart(userId)
     }
 }

@@ -5,5 +5,6 @@ data class OderItem(
     val title: String = "",
     val price: Double = 0.0,
     val thumbnail: String = "",
-    val description: String=""
+    val description: String="",
+    val stock: Int=0
 )

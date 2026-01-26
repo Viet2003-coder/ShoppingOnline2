@@ -8,8 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.shoppingonline.Model.Product
 import com.example.shoppingonline.R
+import com.example.shoppingonline.Translate
 
 class ProductAdapter(
     private val onItemClick:(Product)-> Unit
@@ -37,8 +39,14 @@ class ProductAdapter(
             holder.tvTitle.text=product.title ?: "Không có tiêu đề"
             holder.tvPrice.text=product.price.toString()
             holder.tvdes.text=product.description
+            holder.tvdes.tag=product.description
+        Translate.translateEnToVi(product.description){
+            if (holder.tvdes.tag==product.description) {
+                holder.tvdes.text = it
+            }
+        }
         Glide.with(holder.itemView.context)
-            .load(product.thumbnail)
+            .load(product.thumbnail).diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.outline_download_for_offline_24) // ảnh khi loading
             .error(R.drawable.outline_hide_image_24)               // ảnh khi lỗi
             .into(holder.imgBook)

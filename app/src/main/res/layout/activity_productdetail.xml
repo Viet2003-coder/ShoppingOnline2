@@ -63,22 +63,22 @@
         android:elevation="8dp">
 
         <!-- Thêm vào giỏ -->
-        <Button
+        <ImageButton
             android:id="@+id/btnAddToCart"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:layout_weight="1"
-            android:text="Thêm giỏ hàng"
             android:textSize="14sp"
-            android:backgroundTint="#BDBDBD"
-            android:textColor="@android:color/black" />
+            android:backgroundTint="@color/white"
+            android:src="@drawable/outline_add_shopping_cart_24"
+             />
 
         <!-- Mua ngay -->
         <Button
             android:id="@+id/btnBuyNow"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_weight="2"
+            android:layout_weight="@integer/material_motion_duration_long_1"
             android:layout_marginStart="8dp"
             android:text="MUA NGAY"
             android:textSize="16sp"

@@ -4,13 +4,15 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.TextView
 import androidx.interpolator.R
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppingonline.Model.AddressItem
+import com.example.shoppingonline.Model.Product
 
 class AddressAdapter(
-
+    private val onItemCLick:(AddressItem)-> Unit
 ): RecyclerView.Adapter<AddressAdapter.AddressViewHolder>() {
     private val list=mutableListOf<AddressItem>()
     @SuppressLint("NotifyDataSetChanged")
@@ -35,6 +37,9 @@ class AddressAdapter(
         holder.tvFullname.text=address.fullName
         holder.tvPhone.text=address.phone
         holder.tvFullAdress.text=address.fullAdress
+        holder.itemView.setOnClickListener {
+            onItemCLick(address)
+        }
     }
 
     override fun getItemCount(): Int {

@@ -1,6 +1,5 @@
-package com.example.shoppingonline
+package com.example.shoppingonline.remote.api
 
-import com.example.shoppingonline.remote.api.ProductApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
