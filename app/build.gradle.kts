@@ -76,4 +76,9 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.4")//dùng cho lưu form
+    implementation ("androidx.room:room-runtime:2.6.1")
+    kapt ("androidx.room:room-compiler:2.6.1")
+    implementation ("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("com.google.mlkit:translate:17.0.2")
 }

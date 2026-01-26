@@ -1,13 +1,20 @@
 package com.example.shoppingonline.respository
 
+import android.content.Context
+import androidx.datastore.preferences.core.edit
+import com.example.shoppingonline.CheckOnline
 import com.example.shoppingonline.remote.api.firebase.AthuFirebaseDataReSource
 import com.example.shoppingonline.Model.User
+import com.example.shoppingonline.UserSession
+import com.example.shoppingonline.dataStore
 import com.example.shoppingonline.remote.api.firebase.UserFirebaseDataResource
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.tasks.await
 
 class AuthRepository(
     private val authDS: AthuFirebaseDataReSource = AthuFirebaseDataReSource(),
-    private val userDS: UserFirebaseDataResource = UserFirebaseDataResource()
+    private val userDS: UserFirebaseDataResource = UserFirebaseDataResource(),
 ) {
 
     suspend fun register(
@@ -22,31 +29,57 @@ class AuthRepository(
 
             val user = User(uid, name, email)
             userDS.saveUser(user)
-
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
-
-    suspend fun login(email: String, password: String): Result<Unit> {
+    suspend fun login(email: String, password: String): Result<User> {
         return try {
             authDS.login(email, password)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-    suspend fun getCurrentUser(): Result<User> {
-        return try {
             val uid = FirebaseAuth.getInstance().currentUser?.uid
                 ?: return Result.failure(Exception("Chưa đăng nhập"))
-
             val user = userDS.getUser(uid)
             Result.success(user)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
-
+    suspend fun getUserFromSession(context: Context): User? {
+        val prefs = context.dataStore.data.first()
+        val uid = prefs[UserSession.userId] ?: return null
+        val name = prefs[UserSession.fullname] ?: ""
+        val phone = prefs[UserSession.phone] ?: ""
+        val email = prefs[UserSession.email] ?: ""
+        return User(
+            uid = uid,
+            name = name,
+            phone = phone,
+            email = email
+        )
+    }
+    suspend fun updateAdetail(context: Context, userId: String,field: String,value: String): Result<String>{
+        val successString="Cập nhật thành công"
+        if (!CheckOnline.isOnline(context)){
+            return Result.failure(Exception("Vui lòng kết nối internet"))
+        }
+        return runCatching {
+            userDS.ref.child(userId).child(field).setValue(value).await()
+            successString
+        }
+    }
+    suspend fun updateAvatar(context: Context, userId: String, avatarUrl: String): Result<String>{
+        val successString="Cập nhật ảnh đại diện thành công"
+        if (!CheckOnline.isOnline(context)){
+            return Result.failure(Exception("Vui lòng kết nối internet"))
+        }
+        val userUpdate = mapOf(
+            "avatarUrl" to avatarUrl
+        )
+        return runCatching {
+            userDS.ref.child(userId).updateChildren(userUpdate)
+            successString
+        }
+    }
+//    suspend fun resetPassword()
 }

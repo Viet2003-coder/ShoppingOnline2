@@ -10,10 +10,18 @@
         android:id="@+id/toolbarCart"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#E6A84D"
-        android:title="Giỏ hàng"
-        android:titleTextColor="#DC4C7D"
-        />
+        android:background="#E6A84D">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giỏ hàng"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textColor="#C8370B"
+            android:layout_gravity="center" />
+    </androidx.appcompat.widget.Toolbar>
 
     <!-- Danh sách sản phẩm -->
     <androidx.recyclerview.widget.RecyclerView

@@ -19,10 +19,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
 import com.example.shoppingonline.Model.AddressItem
+import com.example.shoppingonline.Model.User
 import com.example.shoppingonline.R
 import com.example.shoppingonline.UserSession
 import com.example.shoppingonline.databinding.ActivityAddAddressBinding
 import com.example.shoppingonline.respository.AddressRepository
+import com.example.shoppingonline.ui.product.Auth.AuthViewModel
+import com.example.shoppingonline.ui.product.Auth.Login
 import com.google.android.gms.location.LocationServices
 import java.util.Locale
 import java.util.UUID
@@ -33,6 +36,7 @@ class AddAddress : AppCompatActivity() {
         AddressModelFactory(AddressRepository())
     }
     private val formViewModel: AddressFormModel by viewModels()
+    private val auThModel: AuthViewModel by viewModels()
     var province: String=""
     var district: String=""
     var ward: String=""
@@ -46,6 +50,8 @@ class AddAddress : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityAddAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        auThModel.loadUser()
+
         binding.btnPickLocation.setOnClickListener {
             PickLocation()
         }
@@ -81,7 +87,6 @@ class AddAddress : AppCompatActivity() {
         val fullName=binding.edtFullName.text.toString()
         val number=binding.edtPhone.text.toString()
         val note=binding.edtNote.text.toString()
-        val userId= UserSession.currentUser?.uid.toString()
         if (fullName.isEmpty()){
             Toast.makeText(this,"Vui lòng điền tên bạn", Toast.LENGTH_SHORT).show()
             binding.edtFullName.requestFocus()
@@ -92,6 +97,13 @@ class AddAddress : AppCompatActivity() {
             binding.edtPhone.requestFocus()
             return
         }
+        if (fullAdress.isEmpty()){
+            Toast.makeText(this,"Bạn chưa chọn địa chỉ", Toast.LENGTH_SHORT).show()
+            binding.tvSelectedAddress.requestFocus()
+            return
+        }
+
+        auThModel.user.observe(this@AddAddress) { user ->
 //        binding.edtPhone.addTextChangedListener(object : TextWatcher {
 //            private var isFormatting = false
 //
@@ -114,26 +126,24 @@ class AddAddress : AppCompatActivity() {
 //            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 //            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 //        })
-
-        if (fullAdress.isEmpty()){
-            Toast.makeText(this,"Bạn chưa chọn địa chỉ", Toast.LENGTH_SHORT).show()
-            binding.tvSelectedAddress.requestFocus()
-            return
+            if (user==null){
+                startActivity(Intent(this, Login::class.java))
+                return@observe
+            }
+            addressViewModel.addAdress(userId = user.uid, address = AddressItem(
+                UUID.randomUUID().toString(),
+                fullName,
+                number,
+                province,
+                district,
+                ward,
+                street,
+                note,
+                latitude,
+                longtitude
+            )
+            )
         }
-        addressViewModel.addAdress(userId = userId, address = AddressItem(
-            UUID.randomUUID().toString(),
-            fullName,
-            number,
-            province,
-            district,
-            ward,
-            street,
-            note,
-            latitude,
-            longtitude,
-            true
-        )
-        )
 
     }
     //dialog pick map

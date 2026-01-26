@@ -1,15 +1,16 @@
 package com.example.shoppingonline.Model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "products")
 data class Product(
-    val id: String,
-    val title: String,
-    val description: String,
-    val price: Double,
-    val discountPercentage: Double,
-    val rating: Double,
-    val stock: Int,
-    val brand: String,
-    val category: String,
-    val thumbnail: String,
-    val images: List<String>
+    @PrimaryKey
+    var id: String = "",
+    var title: String = "",
+    var description: String = "",
+    var price: Double = 0.0,
+    var stock: Int = 0,
+    var category: String = "",
+    var thumbnail: String = "",
 )

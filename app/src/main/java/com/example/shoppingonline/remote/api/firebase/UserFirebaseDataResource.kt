@@ -5,7 +5,7 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.tasks.await
 
 class UserFirebaseDataResource {
-    private val ref = FirebaseDatabase
+     val ref = FirebaseDatabase
         .getInstance()
         .getReference("users")
 

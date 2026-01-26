@@ -1,4 +1,5 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,42 +9,146 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-<!--        <ImageView-->
-<!--            android:id="@+id/imgAvatar"-->
-<!--            android:layout_width="100dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:src="@drawable/ic_user"-->
-<!--            android:scaleType="centerCrop"/>-->
+        <!-- Avatar bo tròn -->
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_user"
+            android:scaleType="centerCrop"
+            android:background="@drawable/bg_circle"
+            android:clipToOutline="true"/>
 
-        <TextView
-            android:id="@+id/tvName"
-            android:text="Nguyễn Văn A"
-            android:textSize="18sp"
-            android:textStyle="bold"
+        <!-- Tên -->
+        <LinearLayout
             android:layout_marginTop="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <EditText
+                android:id="@+id/edtName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:enabled="false"/>
+
+            <ImageButton
+                android:id="@+id/btnEditName"
+                android:src="@drawable/outline_edit_24"
+                android:background="@null"
+                android:layout_marginStart="8dp"
+                android:contentDescription="Edit / Save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <!-- Phone -->
+        <LinearLayout
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edtPhone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:background="@null"
+                android:enabled="false"/>
+            <ImageButton
+                android:id="@+id/btnEditPhone"
+                android:src="@drawable/outline_edit_24"
+                android:background="@null"
+                android:layout_marginStart="8dp"
+                android:contentDescription="Edit phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <!-- Email -->
         <TextView
             android:id="@+id/tvEmail"
             android:text="email@gmail.com"
             android:layout_marginTop="8dp"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <!-- Thống kê -->
+        <LinearLayout
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvPhone"
-            android:text="0123456789"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <!-- Đơn hàng -->
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:id="@+id/tvOrderCount"
+                    android:text="5"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="Đơn hàng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <!-- Giỏ hàng -->
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvCartCount"
+                    android:text="3"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:text="Trong giỏ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+        <!-- Đổi mật khẩu -->
+        <Button
+            android:id="@+id/btnChangePassword"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đổi mật khẩu"
+            android:drawablePadding="8dp"/>
+        <!-- Logout -->
         <Button
             android:id="@+id/btnLogout"
             android:text="Đăng xuất"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
     </LinearLayout>
 </ScrollView>

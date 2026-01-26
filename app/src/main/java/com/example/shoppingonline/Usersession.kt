@@ -1,7 +1,10 @@
 package com.example.shoppingonline
 
-import com.example.shoppingonline.Model.User
+import androidx.datastore.preferences.core.stringPreferencesKey
 
 object UserSession {
-    var currentUser: User? = null
+    val userId= stringPreferencesKey("userId")
+    val fullname= stringPreferencesKey("fullname")
+    val phone= stringPreferencesKey("phone")
+    val email= stringPreferencesKey("email")
 }

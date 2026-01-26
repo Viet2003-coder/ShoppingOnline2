@@ -15,11 +15,6 @@ class Login : AppCompatActivity() {
     private val viewModel: AuthViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        if (FirebaseAuth.getInstance().currentUser != null) {
-//            startActivity(Intent(this, MainActivity::class.java))
-//            finish()
-//            return
-//        }
         binding= ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.btnLogin.setOnClickListener {
@@ -33,13 +28,11 @@ class Login : AppCompatActivity() {
             viewModel.login(
                 email = binding.edtEmail.text.toString(),
                 password = binding.edtPassword.text.toString(),
-                onSuccess = {user->
-                    UserSession.currentUser=user
+                onSuccess = {
                     Toast.makeText(this@Login,"Đăng nhập thành công", Toast.LENGTH_SHORT).show()
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(Intent(this@Login, MainActivity::class.java))
-                    finish()
-                            },
+                    finish() },
                 onError = {message->
                     Toast.makeText(this@Login,message, Toast.LENGTH_SHORT).show()
                 }

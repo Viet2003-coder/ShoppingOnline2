@@ -1,37 +1,41 @@
 package com.example.shoppingonline.respository
 
+import android.content.Context
+import com.example.shoppingonline.CheckOnline
 import com.example.shoppingonline.Model.CartItem
+import com.example.shoppingonline.remote.api.RoomDatabase.AppDatabase
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Collections
 
-class CartRepository {
-    private val db= FirebaseDatabase.getInstance().reference
-    fun addToCart(userId: String,item: CartItem): Result<Unit>{
-        return try {
-            val result=db.child("carts").child(userId).child(item.productId).setValue(item)
-            Result.success(Unit)
-        } catch (e: Exception){
-            Result.failure(e)
+class CartRepository(
+    private val db: AppDatabase,
+    ) {
+    private val dbFireBase = FirebaseDatabase.getInstance().reference
+    // TODO: Allow adding cart items while offline (Room as source of truth)
+    suspend fun addToCart(context: Context, item: CartItem): Result<String> {
+        val sucessString="Thêm giỏ hàng thành công"
+        if (!CheckOnline.isOnline(context)){
+            return Result.failure(Exception("Vui lòng kết nối internet"))
+        }
+        return runCatching {
+            db.cartDao().insert(item)
+            dbFireBase.child("carts").child(item.userId).child(item.productId).setValue(item)
+            sucessString
         }
     }
 
-    suspend fun getCart(userId: String): List<CartItem> =
-        suspendCancellableCoroutine { cont ->
-            db.child("carts")
-                .child(userId)
-                .get()
-                .addOnSuccessListener { snapshot ->
-                    val list = mutableListOf<CartItem>()
-                    snapshot.children.forEach {
-                        it.getValue(CartItem::class.java)?.let { item ->
-                            list.add(item)
-                        }
-                    }
-                    cont.resume(list, null)
-                }
-                .addOnFailureListener {
-                    cont.resume(Collections.emptyList(), null)
-                }
+    suspend fun getCart(userId: String): List<CartItem> {
+        return db.cartDao().getAllCart(userId)
+    }
+    suspend fun deleteCart(context: Context,userId: String,productId: String): Result<String> {
+        if (!CheckOnline.isOnline(context)){
+            return Result.failure(Exception("Vui lòng kết nối internet"))
+        }
+        return runCatching {
+            db.cartDao().deleteItem(userId,productId)
+            dbFireBase.child("carts").child(userId).child(productId).removeValue()
+            "Đã xóa khỏi giỏ hàng"
         }
     }
+}
