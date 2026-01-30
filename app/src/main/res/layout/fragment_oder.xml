@@ -4,26 +4,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="#F6F6F6">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarOrder"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:background="#E6A84D"
+        android:background="#FFFFFF"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:elevation="4dp">
 
         <TextView
             android:id="@+id/tvToolbarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đơn hàng của tôi"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#DC4C7D"
+            android:textColor="#222222"
             android:layout_gravity="center"/>
     </androidx.appcompat.widget.Toolbar>
 
@@ -41,24 +42,27 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/emptyoder"/>
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:src="@drawable/emptyoder"
+            android:alpha="0.9"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bạn chưa có đơn hàng nào"
-            android:textSize="16sp"
+            android:text="Chưa có đơn hàng"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginTop="12dp"/>
+            android:textColor="#333333"
+            android:layout_marginTop="16dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hãy mua sắm để tạo đơn hàng đầu tiên nhé!"
             android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
+            android:textColor="#777777"
+            android:layout_marginTop="6dp"/>
     </LinearLayout>
 
     <!-- Order list -->
@@ -66,12 +70,14 @@
         android:id="@+id/rvOrders"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="8dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
         android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/toolbarOrder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

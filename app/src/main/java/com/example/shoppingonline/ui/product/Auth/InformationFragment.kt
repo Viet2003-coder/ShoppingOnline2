@@ -32,6 +32,7 @@ class InformationFragment : Fragment(R.layout.fragment_information) {
         val edtPhone = view.findViewById<EditText>(R.id.edtPhone)
         val btnEditPhone = view.findViewById<ImageButton>(R.id.btnEditPhone)
         val btnEditName = view.findViewById<ImageButton>(R.id.btnEditName)
+        val btnResetPassword = view.findViewById<Button>(R.id.btnChangePassword)
         authViewModel.loadUser()
         authViewModel.user.observe(viewLifecycleOwner) { user ->
             if (user == null) {
@@ -40,7 +41,6 @@ class InformationFragment : Fragment(R.layout.fragment_information) {
                 requireActivity().finish()
                 return@observe
             }
-
             setupEditableField(edtName,btnEditName,{name->
                 authViewModel.updateField(user.uid,"name",name)
             })
@@ -49,6 +49,9 @@ class InformationFragment : Fragment(R.layout.fragment_information) {
             })
             oderModel.getOders(user.uid)
             cartModel.loadCart(user.uid)
+            btnResetPassword.setOnClickListener {
+                authViewModel.resetPassword(user.email)
+            }
             // Có user rồi → dùng luôn
             edtName.setText(user.name)
             tvEmail.text = user.email
@@ -76,7 +79,6 @@ class InformationFragment : Fragment(R.layout.fragment_information) {
             Toast.makeText(requireContext(),it.toString(), Toast.LENGTH_SHORT).show()
         }
             }
-        }
     fun setupEditableField(
         editText: EditText,
         button: ImageButton,
@@ -104,3 +106,4 @@ class InformationFragment : Fragment(R.layout.fragment_information) {
             }
         }
     }
+}

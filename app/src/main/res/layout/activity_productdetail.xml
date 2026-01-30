@@ -1,13 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:background="?attr/colorPrimary"
         android:title="Chi tiết sản phẩm"
         android:titleTextColor="@android:color/white" />
@@ -16,70 +19,105 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- Ảnh sản phẩm -->
             <ImageView
                 android:id="@+id/imgProduct"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:scaleType="centerCrop" />
+                android:layout_height="260dp"
+                android:scaleType="centerCrop"
+                android:background="#F5F5F5" />
 
-            <TextView
-                android:id="@+id/tvTitle"
+            <!-- Khối thông tin -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:padding="12dp" />
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tvPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="#E53935"
-                android:padding="12dp" />
+                <!-- Tên sản phẩm -->
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#222222"
+                    android:lineSpacingExtra="4dp" />
 
-            <TextView
-                android:id="@+id/tvDesdetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp" />
+                <!-- Giá -->
+                <TextView
+                    android:id="@+id/tvPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#E53935"
+                    android:layout_marginTop="8dp" />
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginVertical="16dp" />
+
+                <!-- Tiêu đề mô tả -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mô tả sản phẩm"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#222222" />
+
+                <!-- Mô tả -->
+                <TextView
+                    android:id="@+id/tvDesdetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:layout_marginTop="8dp"
+                    android:lineSpacingExtra="6dp" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Thanh nút dưới cùng -->
+    <!-- Thanh hành động dưới -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="#FFFFFF"
-        android:elevation="8dp">
+        android:padding="12dp"
+        android:background="@color/white"
+        android:elevation="12dp">
 
         <!-- Thêm vào giỏ -->
         <ImageButton
             android:id="@+id/btnAddToCart"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
-            android:layout_weight="1"
-            android:textSize="14sp"
-            android:backgroundTint="@color/white"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/bg_icon_button"
             android:src="@drawable/outline_add_shopping_cart_24"
-             />
+            android:contentDescription="Add to cart"
+            app:tint="?attr/colorPrimary" />
 
         <!-- Mua ngay -->
         <Button
             android:id="@+id/btnBuyNow"
             android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="@integer/material_motion_duration_long_1"
-            android:layout_marginStart="8dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
             android:text="MUA NGAY"
             android:textSize="16sp"
             android:textStyle="bold"
