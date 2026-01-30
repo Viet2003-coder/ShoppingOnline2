@@ -81,5 +81,15 @@ class AuthRepository(
             successString
         }
     }
-//    suspend fun resetPassword()
+    suspend fun resetPassword(context: Context,email: String): Result<String>{
+        val successString="Đã gửi email đổi mật khẩu "
+        if (!CheckOnline.isOnline(context)){
+            return Result.failure(Exception("Vui lòng kết nối internet"))
+        }
+       return runCatching {
+            val auth: FirebaseAuth = FirebaseAuth.getInstance()
+            auth.sendPasswordResetEmail(email)
+            successString
+        }
+    }
 }

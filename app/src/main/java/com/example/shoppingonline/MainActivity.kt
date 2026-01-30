@@ -14,11 +14,11 @@ class MainActivity : AppCompatActivity() {
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         viewPager2.adapter= ViewPager2Adapter(this)
         TabLayoutMediator(tabLayout,viewPager2){tab,position->
-            tab.text=when(position){
-                0->"Home"
-                1->"Shopping Carts"
-                2->"Oders"
-                else -> "Profile"
+            when(position){
+                0->tab.setIcon(R.drawable.baseline_home_24)
+                1->tab.setIcon(R.drawable.outline_add_shopping_cart_24)
+                2->tab.setIcon(R.drawable.baseline_shopping_bag_24)
+                else -> tab.setIcon(R.drawable.outline_person_24)
             }
         }.attach()
     }

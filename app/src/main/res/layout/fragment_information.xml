@@ -1,154 +1,198 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F6F6F6">
 
     <LinearLayout
+        android:id="@+id/rootLayout"
         android:orientation="vertical"
-        android:padding="24dp"
+        android:padding="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Avatar bo tròn -->
-        <ImageView
-            android:id="@+id/imgAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/icon_user"
-            android:scaleType="centerCrop"
-            android:background="@drawable/bg_circle"
-            android:clipToOutline="true"/>
-
-        <!-- Tên -->
-        <LinearLayout
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/edtName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:enabled="false"/>
-
-            <ImageButton
-                android:id="@+id/btnEditName"
-                android:src="@drawable/outline_edit_24"
-                android:background="@null"
-                android:layout_marginStart="8dp"
-                android:contentDescription="Edit / Save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
-
-        <!-- Phone -->
-        <LinearLayout
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/edtPhone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:background="@null"
-                android:enabled="false"/>
-            <ImageButton
-                android:id="@+id/btnEditPhone"
-                android:src="@drawable/outline_edit_24"
-                android:background="@null"
-                android:layout_marginStart="8dp"
-                android:contentDescription="Edit phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <!-- Email -->
-        <TextView
-            android:id="@+id/tvEmail"
-            android:text="email@gmail.com"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <!-- Thống kê -->
-        <LinearLayout
-            android:layout_marginTop="24dp"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- Đơn hàng -->
-            <LinearLayout
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tvOrderCount"
-                    android:text="5"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:text="Đơn hàng"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <!-- Giỏ hàng -->
-            <LinearLayout
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tvCartCount"
-                    android:text="3"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:text="Trong giỏ"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </LinearLayout>
-        <!-- Đổi mật khẩu -->
-        <Button
-            android:id="@+id/btnChangePassword"
-            android:layout_marginTop="16dp"
+        <!-- Avatar + info -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="20dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Avatar -->
+                <ImageView
+                    android:id="@+id/imgAvatar"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_user"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/bg_circle"
+                    android:clipToOutline="true"/>
+
+                <!-- Name -->
+                <LinearLayout
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edtName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:enabled="false"
+                        android:background="@null"
+                        android:textColor="#222222"/>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnEditName"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/outline_edit_24"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Edit name"/>
+                </LinearLayout>
+
+                <!-- Phone -->
+                <LinearLayout
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edtPhone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:enabled="false"
+                        android:hint="Vui lòng thêm số điện thoại!!"
+                        android:background="@null"
+                        android:textColor="#555555"/>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnEditPhone"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/outline_edit_24"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Edit phone"/>
+                </LinearLayout>
+
+                <!-- Email -->
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_marginTop="12dp"
+                    android:layout_gravity="center"
+                    android:textColor="#777777"
+                    android:textSize="14sp"
+                    tools:text="email@gmail.com"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Thống kê -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvOrderCount"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#E67E22"
+                        tools:text="5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:text="Đơn hàng"
+                        android:textColor="#666666"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvCartCount"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#E67E22"
+                        tools:text="3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:text="Trong giỏ"
+                        android:textColor="#666666"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Actions -->
+        <Button
+            android:id="@+id/btnChangePassword"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:text="Đổi mật khẩu"
-            android:drawablePadding="8dp"/>
-        <!-- Logout -->
+            android:backgroundTint="#E6A84D"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="12dp"/>
+
         <Button
             android:id="@+id/btnLogout"
-            android:text="Đăng xuất"
-            android:layout_marginTop="32dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="48dp"
+            android:text="Đăng xuất"
+            android:backgroundTint="#DD2C00"
+            android:textColor="@android:color/white"/>
 
     </LinearLayout>
 </ScrollView>

@@ -89,4 +89,11 @@ class AuthViewModel(
                 .onFailure { _message.value=it.message }
         }
     }
+    fun resetPassword(email: String){
+        viewModelScope.launch {
+            authRepo.resetPassword(getApplication(),email)
+                .onSuccess { _message.value=it }
+                .onFailure { _message.value=it.message }
+        }
+    }
 }
