@@ -5,16 +5,13 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.shoppingonline.Model.User
-import com.example.shoppingonline.UserSession
 import com.example.shoppingonline.databinding.ActivityChooseAddressBinding
 import com.example.shoppingonline.ui.product.Auth.AuthViewModel
 import com.example.shoppingonline.ui.product.Auth.Login
-import com.example.shoppingonline.ui.product.oder.BuyActivity
 
 class ChooseAddress : AppCompatActivity() {
     private lateinit var binding: ActivityChooseAddressBinding
-    private val addressViewModel: AddressModel by viewModels()
+    private val addressViewModel: AddressViewModel by viewModels()
     private val auThModel: AuthViewModel by viewModels()
     private lateinit var adpter: AddressAdapter
     override fun onCreate(savedInstanceState: Bundle?) {

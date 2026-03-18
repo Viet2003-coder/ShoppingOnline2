@@ -2,6 +2,7 @@ package com.example.shoppingonline.ui.product.Auth
 
 import android.R
 import android.app.Application
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +14,7 @@ import com.example.shoppingonline.respository.AuthRepository
 import com.example.shoppingonline.respository.SessionRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.core.Context
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
@@ -26,7 +28,8 @@ class AuthViewModel(
     val destination: LiveData<Destination> = _destination
      val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
-
+    private val _isLoading = MutableLiveData<Boolean>(false)
+    val isLoading: LiveData<Boolean> get() = _isLoading
     fun register(
         email: String,
         password: String,
@@ -64,6 +67,7 @@ class AuthViewModel(
     }
     fun start() {
         viewModelScope.launch {
+            delay(2000)
             val loggedIn = sessionRepo.isLoggedIn()
             _destination.value =
                 if (loggedIn) Destination.MAIN else Destination.LOGIN
@@ -80,7 +84,6 @@ class AuthViewModel(
             sessionRepo.clearSession()
             onDone()
         }
-
     }
     fun updateField(userId: String,filed:String,value: String){
         viewModelScope.launch {
@@ -94,6 +97,25 @@ class AuthViewModel(
             authRepo.resetPassword(getApplication(),email)
                 .onSuccess { _message.value=it }
                 .onFailure { _message.value=it.message }
+        }
+    }
+    fun uploadAvatar(imageUri: Uri,userId: String,) {
+        _isLoading.value=true
+        val context=getApplication<Application>().applicationContext
+        viewModelScope.launch {
+            authRepo.uploadAvatar(imageUri).onSuccess { avatarUrl ->
+                authRepo.updateAvatar(context, userId, avatarUrl)
+                    .onSuccess { _message.value = it
+                        loadUser()
+                        _isLoading.value=false
+                    }
+                    .onFailure { _message.value = it.message
+                        _isLoading.value=false
+                    }
+            }.onFailure { _message.value = it.message
+                _isLoading.value=false
+            }
+
         }
     }
 }

@@ -6,9 +6,14 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Internet để load map -->
     <uses-permission android:name="android.permission.INTERNET" /> <!-- Truy cập trạng thái mạng -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <!-- THÊM QUYỀN ĐỌC ẢNH -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <!-- Cho Android 13 trở lên -->
 
     <application
-        android:allowBackup="true"
+        android:name="com.example.shoppingonline.Application.UploadIMage"        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -16,10 +21,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BookStoreOnline">
+        <service
+            android:name="com.cloudinary.android.uploadwidget.UploadWidgetService"
+            android:exported="false" />
+        <service
+            android:name=".MyFirebaseService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.product.oder.OderDetail"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.product.Auth.Login"
             android:exported="false" />
 
@@ -28,25 +45,35 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.product.adress.AddAddress"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.product.adress.ChooseAddress"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.product.oder.BuyActivity"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.product.Productdetail"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.product.adress.PickMapLocation"
             android:exported="false" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.product.Auth.Register"
             android:exported="false" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"
+            />
         <activity
+            android:screenOrientation="portrait"
             android:name=".Splash"
             android:exported="true">
             <intent-filter>

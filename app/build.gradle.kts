@@ -53,7 +53,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     // Firebase BOM
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-
+    implementation("com.google.firebase:firebase-messaging")
     // Firebase Auth
     implementation("com.google.firebase:firebase-auth-ktx")
 
@@ -81,4 +81,6 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.6.1")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("com.google.mlkit:translate:17.0.2")
+    implementation("com.airbnb.android:lottie:6.0.0")
+    implementation("com.cloudinary:cloudinary-android:2.3.1")
 }

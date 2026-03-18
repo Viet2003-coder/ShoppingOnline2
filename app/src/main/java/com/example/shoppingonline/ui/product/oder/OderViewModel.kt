@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoppingonline.Model.Oder
 import com.example.shoppingonline.remote.api.RoomDatabase.AppDatabase
@@ -13,14 +12,16 @@ import com.example.shoppingonline.respository.OderRepository
 import com.example.shoppingonline.respository.ProductRepository
 import kotlinx.coroutines.launch
 
-class OderModel(
+class OderViewModel(
     application: Application
 ): AndroidViewModel(application) {
     val db= AppDatabase.get(application)
     val repo= OderRepository(db)
     val productRepo= ProductRepository(db)
     val _oders= MutableLiveData<List<Oder>>()
-    val oder: LiveData<List<Oder>> =_oders
+    val oders: LiveData<List<Oder>> =_oders
+    val _oder=MutableLiveData<Oder>()
+    val oder: LiveData<Oder> =_oder
     val _message= MutableLiveData<String>()
     val messages: LiveData<String> =_message
     val _orderCount = MutableLiveData<Int>()
@@ -41,6 +42,15 @@ class OderModel(
             repo.getOder(userId).onSuccess { list->
                 _oders.value=list
                 _orderCount.value=list.size
+            }.onFailure {
+                _message.value=it.message
+            }
+        }
+    }
+    fun getOderDetail(context: Context,userId: String, orderId: String){
+        viewModelScope.launch {
+            repo.getOderDetail(context,userId,orderId).onSuccess { oder->
+                _oder.value=oder
             }.onFailure {
                 _message.value=it.message
             }

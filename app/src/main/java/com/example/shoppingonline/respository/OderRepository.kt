@@ -31,4 +31,14 @@ class OderRepository(
      suspend fun updateStatus(userId: String, orderId: String, status: OderStatus){
         db.oderDao().updateStatus(userId,orderId,status)
     }
+    suspend fun getOderDetail(context: Context,userId: String, orderId: String): Result<Oder>{
+        if (!CheckOnline.isOnline(context)){
+            return Result.failure(Exception("Vui lòng kết nối internet"))
+        }
+        return runCatching {
+            val snapshot=dbr.child(userId).child(orderId).get().await()
+            val oder=snapshot.getValue(Oder::class.java)
+            oder?:throw Exception("Không tìm thấy đơn hàng")
+        }
+    }
 }

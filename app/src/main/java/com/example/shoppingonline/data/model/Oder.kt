@@ -13,5 +13,6 @@ data class Oder(
     val shippingAddress: AddressItem = AddressItem(),
     val totalPrice: Double = 0.0,
     val status: OderStatus= OderStatus.PENDING, // PENDING, CONFIRMED, SHIPPING, DONE, CANCEL
-    val createdAt: Long = System.currentTimeMillis()
+    val shippingFee: Double = 0.0,
+    val createdAt: Long = System.currentTimeMillis(),
 )

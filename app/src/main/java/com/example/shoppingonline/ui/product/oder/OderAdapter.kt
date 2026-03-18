@@ -41,7 +41,7 @@ class OderAdapter(
         holder.tvStatus.text=oder.status.name
         holder.tvQuantity.text="Số lượng: x${oder.item.stock}"
         val totalPrice= ceil(oder.totalPrice)
-        holder.tvTotalPrice.text="Tổng tiền: ${totalPrice}đ"
+        holder.tvTotalPrice.text="Tổng tiền: ${totalPrice}$"
         Glide.with(holder.itemView.context).load(oder.item.thumbnail).placeholder(R.drawable.outline_download_for_offline_24) // ảnh khi loading
             .error(R.drawable.outline_hide_image_24)               // ảnh khi lỗi
             .into(holder.imgProduct)

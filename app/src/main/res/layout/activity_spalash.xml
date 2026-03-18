@@ -7,13 +7,14 @@
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6653C"
+    android:background="#ffffff"
     tools:context=".Splash">
-    <ImageView
-        android:scaleType="centerCrop"
-        android:src="@drawable/shopping"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationView"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:clipToOutline="true"
+        app:lottie_rawRes="@raw/shopping_cart_lottie_json_animation"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
         />
 </LinearLayout>

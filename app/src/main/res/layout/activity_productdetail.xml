@@ -87,7 +87,98 @@
                     android:textColor="#666666"
                     android:layout_marginTop="8dp"
                     android:lineSpacingExtra="6dp" />
+                <!-- Divider (Thanh ngăn cách) -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#E0E0E0"
+                    android:layout_marginVertical="16dp" />
 
+                <!-- Tiêu đề Bình luận & Sao trung bình -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đánh giá &amp; Bình luận"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#222222" />
+
+                    <!-- RatingBar hiển thị tổng quan sao của sản phẩm -->
+                    <RatingBar
+                        android:id="@+id/ratingAverage"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:numStars="5"
+                        android:rating="4.5"
+                        android:isIndicator="true" />
+                </LinearLayout>
+                <!-- Ô nhập bình luận nhanh -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_comment_input"> <!-- Bạn có thể tạo file drawable bo góc -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Viết đánh giá của bạn"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <RatingBar
+                        android:id="@+id/ratingInput"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"
+                        android:numStars="5"
+                        android:stepSize="1.0"
+                        android:isIndicator="false" /> <!-- isIndicator="false" để người dùng chọn được sao -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/edtComment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Chia sẻ cảm nhận về sản phẩm..."
+                            android:textSize="14sp"
+                            android:background="@android:color/transparent"
+                            android:minHeight="40dp"/>
+
+                        <ImageButton
+                            android:id="@+id/btnSendComment"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/send_comment"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            app:tint="?attr/colorPrimary" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Danh sách các bình luận cụ thể -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
+                    android:nestedScrollingEnabled="false" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

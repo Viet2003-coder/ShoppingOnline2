@@ -8,19 +8,17 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.example.shoppingonline.CheckOnline
 import com.example.shoppingonline.Model.AddressItem
 import com.example.shoppingonline.Model.Oder
 import com.example.shoppingonline.Model.OderItem
-import com.example.shoppingonline.Model.Product
 import com.example.shoppingonline.Model.User
-import com.example.shoppingonline.UserSession
 import com.example.shoppingonline.data.model.OderStatus
 import com.example.shoppingonline.databinding.ActivityBuyBinding
 import com.example.shoppingonline.ui.product.Auth.AuthViewModel
-import com.example.shoppingonline.ui.product.ProductModel
+import com.example.shoppingonline.ui.product.ProductViewModel
+import com.example.shoppingonline.ui.product.adress.AddressViewModel
 import com.example.shoppingonline.ui.product.adress.ChooseAddress
 import java.util.UUID
 import kotlin.math.*
@@ -35,9 +33,10 @@ class BuyActivity : AppCompatActivity() {
     var product_title=""
     var product_thumnail=""
     var stock=1
-    private val productViewModel : ProductModel by viewModels()
-    private val oderViewModel : OderModel by viewModels()
+    private val productViewModel : ProductViewModel by viewModels()
+    private val oderViewModel : OderViewModel by viewModels()
     private val authViewModel : AuthViewModel by viewModels()
+    private val addressViewModel : AddressViewModel by viewModels()
     var totalPrice=1.0
     var fullName=""
     var phone=""
@@ -46,7 +45,6 @@ class BuyActivity : AppCompatActivity() {
     var lng=0.0
     var note=""
     var addressId=""
-    var currentUser: User?=null
     private lateinit var binding: ActivityBuyBinding
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +71,38 @@ class BuyActivity : AppCompatActivity() {
             updatePrice()
         }
         authViewModel.user.observe(this){user ->
-            binding.tvReceiver.text =
-                if (fullName.isNotBlank()) "$fullName | $phone" else "${user.name} | ${user.phone}"
+//            binding.tvReceiver.text =
+//                if (fullName.isNotBlank()) "$fullName | $phone" else "${user.name} | ${user.phone}"
+//            binding.tvAddress.text =
+//                fullAddress.ifBlank { "Chưa có địa chỉ. Vui lòng chọn!" }
+            Log.d("DEBUG_BUY", "User ID: ${user?.uid}") // Kiểm tra xem có ID chưa
+            if (user!=null) {
+                addressViewModel.getAddressDefault(user.uid)
+            }
+            addressViewModel.addressDefault.observe(this) { address ->
+                if (address != null&&fullName.isEmpty()) {
+                    addressId = address.addressId
+                    fullName = address.fullName
+                    phone = address.phone
+                    fullAddress = address.fullAdress
+                    lat = address.latitude
+                    lng = address.longitude
+                    note = address.note
+                    binding.tvReceiver.text = "$fullName | $phone"
+                    binding.tvAddress.text = fullAddress
+                    // 3. TÍNH TOÁN LẠI PHÍ SHIP (Vì đã có lat, lng mới)
+                    spaceShip = distanceInKm(lat, lng, currentLat, currentLng)
+                    spaceShip = distanceInKm(lat, lng, currentLat, currentLng)
+                    priceShipTotal()
+                    updatePrice()
+                }
+                else {
+                    if(fullName.isEmpty()){
+                        binding.tvAddress.text = "Chưa có địa chỉ. Vui lòng chọn!"
+                        binding.tvReceiver.text = "Chưa có thông tin người nhận"
+                    }
+                }
+            }
             binding.btnConfirmOrder.setOnClickListener {
                 val newStock = stockProduct - stock
                 if (stock > stockProduct) {
@@ -86,11 +114,11 @@ class BuyActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 val oderItem= OderItem(product_id,product_title,product_price,product_thumnail,"",stock)
-                val addressItem= AddressItem(addressId,fullName,phone,fullAddress,"","","",note,lat,lng)
+                val addressItem= AddressItem(user.uid,addressId,fullName,phone,fullAddress,"","","",note,lat,lng)
                 productViewModel.updateStock(product_id,newStock)
                 productViewModel.syncStockToFireBase(product_id,newStock)
                 val order= Oder(user.uid,UUID.randomUUID().toString(),oderItem,addressItem,totalPrice,
-                    OderStatus.PENDING)
+                    OderStatus.PENDING,priceShiping)
                 oderViewModel.addOder(this@BuyActivity, order)
             }
             oderViewModel._message.observe(this){message->
@@ -105,10 +133,6 @@ class BuyActivity : AppCompatActivity() {
                 }
             }
         }
-
-        spaceShip=distanceInKm(lat,lng,currentLat,currentLng)
-        priceShipTotal()
-        binding.tvAddress.text=fullAddress
         binding.btnChangeAddress.setOnClickListener {
             if (!CheckOnline.isOnline(this)){
                 Toast.makeText(this,"Vui lòng kết nối mạng để chọn địa chỉ!", Toast.LENGTH_SHORT).show()
