@@ -19,9 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
 import com.example.shoppingonline.Model.AddressItem
-import com.example.shoppingonline.Model.User
 import com.example.shoppingonline.R
-import com.example.shoppingonline.UserSession
 import com.example.shoppingonline.databinding.ActivityAddAddressBinding
 import com.example.shoppingonline.respository.AddressRepository
 import com.example.shoppingonline.ui.product.Auth.AuthViewModel
@@ -32,7 +30,7 @@ import java.util.UUID
 
 class AddAddress : AppCompatActivity() {
     private lateinit var binding: ActivityAddAddressBinding
-    private val addressViewModel: AddressModel by viewModels(){
+    private val addressViewModel: AddressViewModel by viewModels(){
         AddressModelFactory(AddressRepository())
     }
     private val formViewModel: AddressFormModel by viewModels()
@@ -130,8 +128,11 @@ class AddAddress : AppCompatActivity() {
                 startActivity(Intent(this, Login::class.java))
                 return@observe
             }
-            addressViewModel.addAdress(userId = user.uid, address = AddressItem(
-                UUID.randomUUID().toString(),
+            val addressId=UUID.randomUUID().toString()
+            val isdefault=binding.cbDefault.isChecked
+            addressViewModel.addAdress(address = AddressItem(
+                user.uid,
+                addressId,
                 fullName,
                 number,
                 province,
@@ -140,12 +141,17 @@ class AddAddress : AppCompatActivity() {
                 street,
                 note,
                 latitude,
-                longtitude
+                longtitude,
+                isdefault
             )
             )
+            if (binding.cbDefault.isChecked){
+                addressViewModel.setAddressDefault(userId = user.uid, addressId =addressId )
+            }
+            Toast.makeText(this,"Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show()
+            finish()
         }
-
-    }
+        }
     //dialog pick map
     @SuppressLint("UseKtx")
     private fun PickLocation() {

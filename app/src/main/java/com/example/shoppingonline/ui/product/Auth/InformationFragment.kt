@@ -1,27 +1,37 @@
 package com.example.shoppingonline.ui.product.Auth
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.shoppingonline.Model.User
+import com.bumptech.glide.Glide
 import com.example.shoppingonline.R
-import com.example.shoppingonline.UserSession
-import com.example.shoppingonline.ui.product.cart.CartModel
-import com.example.shoppingonline.ui.product.oder.OderModel
-import com.google.firebase.auth.FirebaseAuth
+import com.example.shoppingonline.ui.product.cart.CartViewModel
+import com.example.shoppingonline.ui.product.oder.OderViewModel
 
 class InformationFragment : Fragment(R.layout.fragment_information) {
     private val authViewModel: AuthViewModel by viewModels()
-    private val cartModel: CartModel by viewModels()
-    private val oderModel: OderModel by viewModels()
+    private val cartViewModel: CartViewModel by viewModels()
+    private val oderViewModel: OderViewModel by viewModels()
+    private var userId: String? = null
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            userId?.let { userId ->
+                authViewModel.uploadAvatar(uri,userId)
+            } ?:run {
+                Toast.makeText(requireContext(), "Vui lòng đăng nhập", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val edtName = view.findViewById<EditText>(R.id.edtName)
@@ -33,6 +43,8 @@ class InformationFragment : Fragment(R.layout.fragment_information) {
         val btnEditPhone = view.findViewById<ImageButton>(R.id.btnEditPhone)
         val btnEditName = view.findViewById<ImageButton>(R.id.btnEditName)
         val btnResetPassword = view.findViewById<Button>(R.id.btnChangePassword)
+        val imgAvatar = view.findViewById<ImageView>(R.id.imgAvatar)
+        val progressBar = view.findViewById<ProgressBar>(R.id.pbAvatar)
         authViewModel.loadUser()
         authViewModel.user.observe(viewLifecycleOwner) { user ->
             if (user == null) {
@@ -41,14 +53,15 @@ class InformationFragment : Fragment(R.layout.fragment_information) {
                 requireActivity().finish()
                 return@observe
             }
-            setupEditableField(edtName,btnEditName,{name->
-                authViewModel.updateField(user.uid,"name",name)
+            userId=user.uid
+            setupEditableField(edtName, btnEditName, { name ->
+                authViewModel.updateField(user.uid, "name", name)
             })
-            setupEditableField(edtPhone,btnEditPhone,{phone->
-                authViewModel.updateField(user.uid,"phone",phone)
+            setupEditableField(edtPhone, btnEditPhone, { phone ->
+                authViewModel.updateField(user.uid, "phone", phone)
             })
-            oderModel.getOders(user.uid)
-            cartModel.loadCart(user.uid)
+            oderViewModel.getOders(user.uid)
+            cartViewModel.loadCart(user.uid)
             btnResetPassword.setOnClickListener {
                 authViewModel.resetPassword(user.email)
             }
@@ -56,29 +69,52 @@ class InformationFragment : Fragment(R.layout.fragment_information) {
             edtName.setText(user.name)
             tvEmail.text = user.email
             edtPhone.setText(user.phone)
-            if (user.phone.isEmpty()){
-                edtPhone.hint="Vui lòng thêm số điện thoại!!!"
+            if (user.phone.isEmpty()) {
+                edtPhone.hint = "Vui lòng thêm số điện thoại!!!"
             }
-                    btnLogout.setOnClickListener {
-                        authViewModel.logOut {
-                            val intent = Intent(requireContext(), Login::class.java)
-                            intent.flags =
-                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(intent)
-                            requireActivity().finish()
-                        }
-                    }
+            if (!user.avatarUrl.isNullOrEmpty()) {
+                Glide.with(this)
+                    .load(user.avatarUrl)
+                    .placeholder(R.drawable.outline_person_24)
+                    .error(R.drawable.outline_person_24)
+                    .circleCrop().into(imgAvatar)
+            } else{
+                imgAvatar.setImageResource(R.drawable.outline_person_24)
+            }
+            btnLogout.setOnClickListener {
+                authViewModel.logOut {
+                    val intent = Intent(requireContext(), Login::class.java)
+                    intent.flags =
+                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    requireActivity().finish()
                 }
-        oderModel.orderCount.observe(viewLifecycleOwner) {
+            }
+        }
+        oderViewModel.orderCount.observe(viewLifecycleOwner) {
             tvQuatityOder.text = it.toString()
         }
-        cartModel.cartCount.observe(viewLifecycleOwner) {
+        cartViewModel.cartCount.observe(viewLifecycleOwner) {
             tvQuatityCart.text = it.toString()
         }
         authViewModel.message.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(),it.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
         }
+        imgAvatar.setOnClickListener {
+            pickImageLauncher.launch("image/*")
+        }
+        authViewModel.isLoading.observe(viewLifecycleOwner) {
+            if (it){
+                progressBar.visibility=View.VISIBLE
+                imgAvatar.alpha=0.5f
+                imgAvatar.isEnabled=false
+            }else{
+                progressBar.visibility=View.GONE
+                imgAvatar.alpha=1f
+                imgAvatar.isEnabled=true
             }
+        }
+    }
     fun setupEditableField(
         editText: EditText,
         button: ImageButton,
@@ -105,5 +141,5 @@ class InformationFragment : Fragment(R.layout.fragment_information) {
                 button.setImageResource(R.drawable.outline_edit_24)
             }
         }
+        }
     }
-}

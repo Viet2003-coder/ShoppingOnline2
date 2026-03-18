@@ -9,8 +9,8 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey
     val uid : String="",
-    val name: String="",
+    var name: String="",
     val email: String="",
-    val phone: String = "",
-    val avatarUrl: String = ""
+    var phone: String = "",
+    var avatarUrl: String = ""
 )

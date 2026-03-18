@@ -15,7 +15,7 @@ import com.example.shoppingonline.ui.product.Auth.AuthViewModel
 import com.example.shoppingonline.ui.product.Auth.Login
 
 class OderFragment : Fragment() {
-    private val oderModel: OderModel by viewModels()
+    private val oderViewModel: OderViewModel by viewModels()
     private val autModel: AuthViewModel by viewModels()
     private lateinit var oderAdapter: OderAdapter
     override fun onCreateView(
@@ -41,7 +41,7 @@ class OderFragment : Fragment() {
                 startActivity(Intent(requireContext(), Login::class.java))
                 return@observe
             }
-            oderModel._oders.observe(viewLifecycleOwner){orders ->
+            oderViewModel._oders.observe(viewLifecycleOwner){ orders ->
                 if (orders.isEmpty()) {
                     layoutEmpty.visibility = View.VISIBLE
                     rcv.visibility = View.GONE
@@ -51,7 +51,7 @@ class OderFragment : Fragment() {
                 }
                 oderAdapter.submitData(orders)
             }
-            oderModel.getOders(user.uid)
+            oderViewModel.getOders(user.uid)
         }
         return view
     }
@@ -64,10 +64,10 @@ class OderFragment : Fragment() {
                 startActivity(Intent(requireContext(), Login::class.java))
                 return@observe
             }
-            oderModel._oders.observe(viewLifecycleOwner){orders ->
+            oderViewModel._oders.observe(viewLifecycleOwner){ orders ->
                 oderAdapter.submitData(orders)
             }
-            oderModel.getOders(user.uid)
+            oderViewModel.getOders(user.uid)
         }
     }
 }

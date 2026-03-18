@@ -13,9 +13,10 @@ class SessionRepository(
     suspend fun saveUser(user: User){
         context.dataStore.edit { prefs ->
             prefs[UserSession.userId] = user.uid
-            prefs[UserSession.fullname] = user.name
+            prefs[UserSession.name] = user.name
             prefs[UserSession.phone] = user.phone
             prefs[UserSession.email] = user.email
+            prefs[UserSession.avatarUrl] = user.avatarUrl
         }
     }
     suspend fun isLoggedIn(): Boolean {
